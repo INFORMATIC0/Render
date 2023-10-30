@@ -5,7 +5,6 @@ import subprocess
 import os
 import sys
 from telethon.tl.types import DocumentAttributeFilename
-from renderity_utils import apilog
 
 api_hash="131b576240be107210aace99a5f5c5b0"
 api_id="9024532"
@@ -32,7 +31,7 @@ def ejecutar_comando(command, env_id):
     try:
     	resultado = subprocess.getoutput(command)
     except:
-    	apilog().put("EL COMANDO: "+str(command)+" | DIÓ ERROR", "danger")
+    	None
 
     # Volver al directorio de trabajo original
     os.chdir("..")
@@ -63,7 +62,6 @@ async def my_event_handler(event):
     if str(user.id) in open("users","r").read():
     	if "/start" in event.raw_text:
     		await client.send_message(user.id,'<b>BIENVENIDO A BASHE</b>\n\n<i>BashE es un potente ejecutor de comandos bash preparado para tus proyectos.</i>\n\n <b>🏁Puedes comenzar a crear:</b>\n\n<code>$ echo "Hola mundo"</code>\n\n <b>🎦CONVERTIDOR DE VIDEOS</b>\n\n<code>$ ffmpeg -i [VIDEO] -vf "scale=480:240" -c:v libx264 -crf 20 -preset veryfast -c:a copy [NUEVO VIDEO]</code>\n\n <b>🔍LECTOR DE IMAGENES OCR</b>\n\n<code>$ tesseract [IMAGEN] stdout</code>\n\n <b>📚ZIPS SPLIT</b>\n\n<code>$ 7z a -v[TAMAÑO]m [NOMBRE COMPRIMIDO].7z [NOMBRE DEL ARCHIVO A COMPRIMIR]</code>\n\n <b>🚀PYTHON DEPLOY</b>\n\n<code>$ python3 [ARCHIVO PYTHON]</code>\n\n <b>🔗DESCARGADOR POR URL</b>\n\n<code>$ curl -O [URL]</code>\n\n <b>⏬DESCARGADOR DE DOCUMENTOS Y VIDEOS DE TELEGRAM</b>\n\n<code>SUBE O REENVÍA TU ARCHIVO</code>\n\n <b>⏫CARGADOR DE ARCHIVOS A TELEGRAM</b>\n\n<code>/upload [ARCHIVO]</code>\n\n<b>¡¡BASH ES TU LÍMITE!!</b>\n\n\n<b>CREADO POR:</b><i>@l_tech_dev_l</i>', parse_mode='HTML')
-    		apilog().put("COMANDO START CONFIRMADO", "warning")
     	elif '/upload' in event.raw_text:
     		msg = await client.send_message(user.id,"<b>^^SUBIENDO A TELEGRAM^^</b>", parse_mode='HTML')
     		await client.send_file(user.id ,file="./ambiente_"+str(user.id)+'/'+event.raw_text.split(" ")[1])
@@ -100,7 +98,7 @@ async def my_event_handler(event):
     		await client.send_message(user.id,'<b>×COMANDO DESCONOCIDO×</b>', parse_mode='HTML')
     else:
         await client.send_message(user.id,'<b>BIENVENIDO A BASHE</b>\n\n<i>BashE es un potente ejecutor de comandos bash preparado para tus proyectos.</i>\n\n <b>🏁Puedes comenzar a crear:</b>\n\n<code>$ echo "Hola mundo"</code>\n\n <b>🎦CONVERTIDOR DE VIDEOS</b>\n\n<code>$ ffmpeg -i [VIDEO] -vf "scale=480:240" -c:v libx264 -crf 20 -preset veryfast -c:a copy [NUEVO VIDEO]</code>\n\n <b>🔍LECTOR DE IMAGENES OCR</b>\n\n<code>$ tesseract [IMAGEN] stdout</code>\n\n <b>📚ZIPS SPLIT</b>\n\n<code>$ 7z a -v[TAMAÑO]m [NOMBRE COMPRIMIDO].7z [NOMBRE DEL ARCHIVO A COMPRIMIR]</code>\n\n <b>🚀PYTHON DEPLOY</b>\n\n<code>$ python3 [ARCHIVO PYTHON]</code>\n\n <b>🔗DESCARGADOR POR URL</b>\n\n<code>$ curl -O [URL]</code>\n\n <b>⏬DESCARGADOR DE DOCUMENTOS Y VIDEOS DE TELEGRAM</b>\n\n<code>SUBE O REENVÍA TU ARCHIVO</code>\n\n <b>⏫CARGADOR DE ARCHIVOS A TELEGRAM</b>\n\n<code>/upload [ARCHIVO]</code>\n\n\n<b>¡¡BASH ES TU LÍMITE!!</b>\n\n\n<b>CREADO POR:</b><i>@l_tech_dev_l</i>\n\n\n\n××LAMENTABLEMEMTE NO TIENES ACCESO A ESTE BOT××', parse_mode='HTML')
-        apilog().put("EL USUARIO DE ID "+user.id+" INTENTÓ ACCEDER AL BOT", "danger")
+        
 
 @client.on(events.InlineQuery)
 async def handle_inline_query(event):
@@ -124,6 +122,6 @@ async def handle_inline_query(event):
 
         await event.answer(results)
 
-apilog().put("BOT BASHE INICIADO", "success")
+
 print("BOT INICIADO")
 client.run_until_disconnected()
